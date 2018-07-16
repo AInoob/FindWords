@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="UTF-8" />
+  <meta http-equiv="X-UA-Compatible" content="IE=Edge" />
+  <title>Boilerplate text app</title>
+  <script src="https://appsforoffice.microsoft.com/lib/1/hosted/office.js" type="text/javascript"></script>
+  <script src="https://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.9.1.min.js" type="text/javascript"></script>
+  <style>
+    .rotate {
+      -webkit-transform: rotate(270deg);
+      -moz-transform: rotate(270deg);
+      -o-transform: rotate(270deg);
+      -ms-transform: rotate(270deg);
+      transform: rotate(270deg);
+    }
+    .hide {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+
+<div id="content-header">
+  <div class="padding">
+    <h1>Find words by <a target="_blank" style="text-decoration: none; color: #b55dff" href="https://ainoob.com">AInoob</a></h1>
+  </div>
+</div>
+<div id="content-main">
+  <div class="padding">
+    <h3>Checking words(csv)</h3>
+    <textarea id="words"></textarea>
+    <h3>Result</h3>
+    <button id="findWords">Find words</button>
+    <span>total of: <span id="findCount">?</span> occurrence(s)</span>
+    <br />
+    <svg id="findWordsExpand" style="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><g id="Bounding_Boxes"><path fill="none" d="M0,0h24v24H0V0z"/></g><g id="Sharp"><path d="M7,10l5,5l5-5H7z"/></g></svg>
+    <div id="findResult"></div>
+    <br />
+    <button id="highlightWords">Highlight words</button>
+    <span>highlighted: <span id="highlightCount">?</span> word(s)</span>
+    <br />
+    <!--<svg id="highlightWordsExpand" style="" xmlns="http://www.w3.org/2000/svg" xmlns:xlink="http://www.w3.org/1999/xlink" version="1.1" x="0px" y="0px" width="24px" height="24px" viewBox="0 0 24 24" enable-background="new 0 0 24 24" xml:space="preserve"><g id="Bounding_Boxes"><path fill="none" d="M0,0h24v24H0V0z"/></g><g id="Sharp"><path d="M7,10l5,5l5-5H7z"/></g></svg>-->
+    <!--<div id="highlightResult"></div>-->
+    <br /><br />
+    <h3>Some not important logging</h3>
+    <button id="change">change</button>
+    <button id="test">test</button>
+    <br /><br />
+    <div id="wut"></div>
+  </div>
+</div>
+<br />
+<script>
+  function display(s) {
+    document.getElementById('wut').innerHTML += s + '</br>';
+  }
+  console.log = display;
+  console.err = display;
+  function noobRun(fn) {
+    try {
+      fn();
+    }
+    catch (e) {
+      display(e);
+      display(fn);
+    }
+  }
+
+  function highlightWords() {
+    Word.run(function (context) {
+      // Create a proxy object for the document.
+      var thisDocument = context.document;
+      var rangeList = [];
+      var o = 0;
+      window.words.forEach(function(word) {
+        var ranges = thisDocument.body.search(word, { matchCase: false });
+        context.load(ranges, 'font');
+        context.load(ranges, 'text');
+        rangeList.push(ranges);
+      });
+      return context.sync().then(function () {
+        rangeList.forEach(function(ranges) {
+          for (var i = 0; i < ranges.items.length; i++) {
+            ranges.items[i].font.color = 'purple';
+            ranges.items[i].font.highlightColor = '#FFFF00'; //Yellow
+            ranges.items[i].font.bold = true;
+            rangeXList.push(ranges.items[i]);
+            o ++;
+            document.getElementById("highlightCount").innerText = o;
+          }
+        })
+        console.log('highlight words done');
+        // range.font.color = '#FF0000';
+        // console.log(html.value);
+      });
+    })
+    .catch(display);
+  }
+
+  function select(word, index) {
+    display('start select');
+    Word.run(function (context) {
+      // Create a proxy object for the document.
+      var thisDocument = context.document;
+      var rangeList = [];
+      var o = 0;
+      var ranges = thisDocument.body.search(word, { matchCase: false });
+      context.load(ranges, 'font');
+      rangeList.push(ranges);
+      return context.sync().then(function () {
+        ranges.items[index].select();
+        console.log('select words done');
+        // range.font.color = '#FF0000';
+        // console.log(html.value);
+      });
+    })
+    .catch(display);
+  }
+
+  function findWords() {
+    Word.run(function (context) {
+      var doc = context.document;
+      var body = doc.body;
+      context.load(body, 'text');
+      var xMap = {};
+      return context.sync().then(function () {
+        var text = body.text;
+        var resultHtml = '';
+        var o = 0;
+        var wordTemp = '(';
+        window.words.forEach(function(word) {
+          wordTemp += word + '|';
+        });
+        wordTemp = wordTemp.substr(0, wordTemp.length - 1) + ')';
+        display(wordTemp)
+        var reg = new RegExp(wordTemp, 'gi');
+        var result;
+        while ((result = reg.exec(text)) != null) {
+          var word = result[0];
+          xMap[word] = xMap[word] || 0;
+          xMap[word] ++;
+          o++;
+          resultHtml += (
+            '<span onclick="select(\'' + word + '\',' + xMap[word] + ')">'
+            + o
+            + ':&nbsp;&nbsp;&nbsp;&nbsp;'
+            + text.substr(reg.lastIndex - word.length - 10, 10)
+            + '<b>' + text.substr(reg.lastIndex - word.length, word.length) + '</b>'
+            + text.substr(reg.lastIndex, 10)
+            + '</span>'
+            + '<br/>'
+          );
+          document.getElementById("findCount").innerText = o;
+        }
+        document.getElementById("findCount").innerText = o;
+        document.getElementById("findResult").innerHTML = resultHtml;
+        console.log('find words done');
+      });
+    })
+    .catch(display);
+  }
+
+  function test() {
+    Word.run(function (context) {
+      // Create a proxy object for the document.
+      var thisDocument = context.document;
+
+      var ranges = thisDocument.body.search('your', { matchCase: false });
+      context.load(ranges, 'font');
+      return context.sync().then(function () {
+        ranges.getFirst().select();
+        for (var i = 0; i < ranges.items.length; i++) {
+          ranges.items[i].font.color = 'purple';
+          ranges.items[i].font.highlightColor = '#FFFF00'; //Yellow
+          ranges.items[i].font.bold = true;
+        }
+        // range.font.color = '#FF0000';
+        // console.log(html.value);
+      });
+    })
+    .catch(function (error) {
+      console.log('Error: ' + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log('Debug info: ' + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+
+  function change() {
+    Word.run(function (context) {
+      // Create a proxy object for the document.
+      var thisDocument = context.document;
+
+      // Queue a command to get the current selection.
+      // Create a proxy range object for the selection.
+      var range = thisDocument.getSelection();
+      // context.load(range, 'font');
+      var font = range.font;
+      context.load(font, 'bold');
+
+      // Queue a command to replace the selected text.
+
+      // Synchronize the document state by executing the queued commands,
+      // and return a promise to indicate task completion.
+      return context.sync().then(function () {
+        font.bold = !font.bold;
+        font.color = '#FF0000';
+        font.underline = 'Double';
+        // range.insertText(font.color.bold(), Word.InsertLocation.replace);
+        console.log('changed');
+      });
+    })
+    .catch(function (error) {
+      console.log('Error: ' + JSON.stringify(error));
+      if (error instanceof OfficeExtension.Error) {
+        console.log('Debug info: ' + JSON.stringify(error.debugInfo));
+      }
+    });
+  }
+
+  function getArr(csv) {
+    try {
+      return csv.split(',').map(function(x) {
+        return x.trim();
+      }).filter(function(x) {
+        return x.length > 0;
+      });
+    }
+    catch(e) {
+      display(e);
+      return [];
+    }
+  }
+
+  $(document).ready(function () {
+    display('document ready');
+    var words = window.localStorage.getItem('words');
+    document.getElementById('words').innerText = words;
+    display('words: ' + words);
+    if (words) {
+      window.words = getArr(words);
+    }
+    // Do something that is only available via the new APIs
+    $('#findWords').click(findWords);
+    $('#highlightWords').click(highlightWords);
+    $('#change').click(change);
+    $('#test').click(test);
+    $('#words').on('change', function(e) {
+      var value = e.target.value;
+      display(value);
+      window.words = getArr(value);
+      window.localStorage.setItem('words', value);
+    });
+    $('#findWordsExpand').click(function() {
+      var toggle = document.getElementById('findWordsExpand');
+      var result = document.getElementById('findResult');
+      if (toggle.classList.contains('rotate')) {
+        toggle.classList.remove('rotate');
+        result.classList.remove('hide');
+      }
+      else {
+        toggle.classList.add('rotate');
+        result.classList.add('hide');
+      }
+    });
+    $('#highlightWordsExpand').click(function() {
+      var toggle = document.getElementById('highlightWordsExpand');
+      var result = document.getElementById('highlightResult');
+      if (toggle.classList.contains('rotate')) {
+        toggle.classList.remove('rotate');
+        result.classList.remove('hide');
+      }
+      else {
+        toggle.classList.add('rotate');
+        result.classList.add('hide');
+      }
+    });
+  });
+</script>
+</body>
+</html>
