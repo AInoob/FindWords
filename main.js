@@ -21,6 +21,7 @@
       $('#highlightWords').click(highlightWords);
       $('#change').click(change);
       $('#test').click(test);
+      $(document).on('click', '.selectWord', select);
       $('#words').on('change', function (e) {
         var value = e.target.value;
         display(value);
@@ -59,15 +60,6 @@
   }
   console.log = display;
   console.err = display;
-  function noobRun(fn) {
-    try {
-      fn();
-    }
-    catch (e) {
-      display(e);
-      display(fn);
-    }
-  }
 
   function highlightWords() {
     Word.run(function (context) {
@@ -87,7 +79,6 @@
             ranges.items[i].font.color = 'purple';
             ranges.items[i].font.highlightColor = '#FFFF00'; //Yellow
             ranges.items[i].font.bold = true;
-            rangeXList.push(ranges.items[i]);
             o++;
             document.getElementById("highlightCount").innerText = o;
           }
@@ -100,8 +91,11 @@
     .catch(display);
   }
 
-  function select(word, index) {
+  function select(e) {
     display('start select');
+    var word = e.getAttribute('word');
+    var index = parseInt(e.getAttribute('index'));
+    display('ohhh ' + word + ' ' + index);
     Word.run(function (context) {
       // Create a proxy object for the document.
       var thisDocument = context.document;
@@ -144,7 +138,7 @@
           xMap[word]++;
           o++;
           resultHtml += (
-            '<span onclick="select(\'' + word + '\',' + xMap[word] + ')">'
+            '<span class="selectWord" word="' + word + '" index="' + xMap[word] + ')">'
             + o
             + ':&nbsp;&nbsp;&nbsp;&nbsp;'
             + text.substr(reg.lastIndex - word.length - 10, 10)
