@@ -1,0 +1,29 @@
+html {
+    position: relative;
+    min-height: 100%;
+}
+body {
+    margin: 0 0 40px; /* bottom = footer height */
+}
+.footer {
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 40px;
+    width: 100%;
+}
+
+.padding {
+    padding: 15px;
+}
+
+.rotate {
+    -webkit-transform: rotate(270deg);
+    -moz-transform: rotate(270deg);
+    -o-transform: rotate(270deg);
+    -ms-transform: rotate(270deg);
+    transform: rotate(270deg);
+}
+.hide {
+    display: none;
+}
