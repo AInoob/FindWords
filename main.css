@@ -17,6 +17,10 @@ body {
     padding: 15px;
 }
 
+.selectWord {
+    cursor: pointer;
+}
+
 .rotate {
     -webkit-transform: rotate(270deg);
     -moz-transform: rotate(270deg);

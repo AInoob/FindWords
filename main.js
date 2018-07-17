@@ -93,8 +93,10 @@
 
   function select(e) {
     display('start select');
-    var word = e.getAttribute('word');
-    var index = parseInt(e.getAttribute('index'));
+try {
+display(e.currentTarget);
+    var word = $(e.currentTarget).attr('word');
+    var index = parseInt($(e.currentTarget).attr('index'));
     display('ohhh ' + word + ' ' + index);
     Word.run(function (context) {
       // Create a proxy object for the document.
@@ -112,6 +114,7 @@
       });
     })
     .catch(display);
+} catch(e) {display(e)};
   }
 
   function findWords() {
@@ -138,7 +141,7 @@
           xMap[word]++;
           o++;
           resultHtml += (
-            '<span class="selectWord" word="' + word + '" index="' + xMap[word] + ')">'
+            '<span class="selectWord" word="' + word + '" index="' + (xMap[word] - 1) + ')">'
             + o
             + ':&nbsp;&nbsp;&nbsp;&nbsp;'
             + text.substr(reg.lastIndex - word.length - 10, 10)
