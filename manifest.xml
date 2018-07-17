@@ -21,7 +21,7 @@
     <Description DefaultValue="FindWords"/>
 
     <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
-    <IconUrl DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/images/icon32.png" />
+    <IconUrl DefaultValue="https://ainoob.com/FindWords/images/icon32.png" />
 
     <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
     <AppDomains>
@@ -35,7 +35,7 @@
         <Host Name="Document" />
     </Hosts>
     <DefaultSettings>
-        <SourceLocation DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/main.html" />
+        <SourceLocation DefaultValue="https://ainoob.com/FindWords/main.html" />
     </DefaultSettings>
     <!-- End TaskPane Mode integration.  -->
 
@@ -115,14 +115,14 @@
         <!-- You can use resources across hosts and form factors. -->
         <Resources>
             <bt:Images>
-                <bt:Image id="Contoso.tpicon_16x16" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/images/icon16.png" />
-                <bt:Image id="Contoso.tpicon_32x32" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/images/icon32.png" />
-                <bt:Image id="Contoso.tpicon_80x80" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/images/icon80.png" />
+                <bt:Image id="Contoso.tpicon_16x16" DefaultValue="https://ainoob.com/FindWords/images/icon16.png" />
+                <bt:Image id="Contoso.tpicon_32x32" DefaultValue="https://ainoob.com/FindWords/images/icon32.png" />
+                <bt:Image id="Contoso.tpicon_80x80" DefaultValue="https://ainoob.com/FindWords/images/icon80.png" />
             </bt:Images>
             <bt:Urls>
-                <bt:Url id="Contoso.DesktopFunctionFile.Url" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/main.html" />
-                <bt:Url id="Contoso.Taskpane.Url" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/main.html" />
-                <bt:Url id="Contoso.GetStarted.LearnMoreUrl" DefaultValue="https://raw.githubusercontent.com/AInoob/FindWords/master/README.md" />
+                <bt:Url id="Contoso.DesktopFunctionFile.Url" DefaultValue="https://ainoob.com/FindWords/main.html" />
+                <bt:Url id="Contoso.Taskpane.Url" DefaultValue="https://ainoob.com/FindWords/main.html" />
+                <bt:Url id="Contoso.GetStarted.LearnMoreUrl" DefaultValue="https://ainoob.com/FindWords/README.md" />
             </bt:Urls>
             <!-- ShortStrings max characters==125. -->
             <bt:ShortStrings>
