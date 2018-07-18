@@ -82,6 +82,7 @@
           var word = ranges.word;
           for (var i = 0; i < ranges.items.length; i++) {
             var range = ranges.items[i];
+            o++;
 
             resultHtml += (
               '<span class="selectWord" word="' + word + '" index="' + i + ')">'
