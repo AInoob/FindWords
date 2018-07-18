@@ -23,6 +23,8 @@
     <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
     <IconUrl DefaultValue="https://ainoob.com/FindWords/images/icon32.png" />
 
+    <SupportUrl DefaultValue="https://github.com/AInoob/FindWords" />
+
     <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
     <AppDomains>
         <AppDomain>ainoob.com</AppDomain>

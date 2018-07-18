@@ -61,7 +61,7 @@
   console.log = display;
   console.err = display;
 
-  function highlightWords() {
+  function search(highlight) {
     Word.run(function (context) {
       // Create a proxy object for the document.
       var thisDocument = context.document;
@@ -69,21 +69,48 @@
       var o = 0;
       window.words.forEach(function (word) {
         var ranges = thisDocument.body.search(word, { matchCase: false });
+        ranges.word = word;
         context.load(ranges, 'font');
         context.load(ranges, 'text');
         rangeList.push(ranges);
       });
       return context.sync().then(function () {
+        var resultHtml = '';
+        var o = 0;
+
         rangeList.forEach(function (ranges) {
+          var word = ranges.word;
           for (var i = 0; i < ranges.items.length; i++) {
-            ranges.items[i].font.color = 'purple';
-            ranges.items[i].font.highlightColor = '#FFFF00'; //Yellow
-            ranges.items[i].font.bold = true;
-            o++;
-            document.getElementById("highlightCount").innerText = o;
+            var range = ranges.items[i];
+
+            resultHtml += (
+              '<span class="selectWord" word="' + word + '" index="' + i + ')">'
+              + o
+              + ':&nbsp;&nbsp;&nbsp;&nbsp;'
+              + '<b>' + word + '</b>'
+              + '</span>'
+              + '<br/>'
+            );
+            document.getElementById("findCount").innerText = o;
+
+            if (highlight) {
+              range.font.color = 'purple';
+              range.font.highlightColor = '#FFFF00'; //Yellow
+              range.font.bold = true;
+              o++;
+              document.getElementById("findCount").innerText = o;
+            }
           }
         })
-        console.log('highlight words done');
+
+        document.getElementById("findResult").innerHTML = resultHtml;
+
+        if (highlight) {
+          console.log('highlight words done');
+        }
+        else {
+          console.log('find words done');
+        }
         // range.font.color = '#FF0000';
         // console.log(html.value);
       });
@@ -91,10 +118,13 @@
     .catch(display);
   }
 
+  function highlightWords() {
+    search(true);
+  }
+
   function select(e) {
     display('start select');
-try {
-display(e.currentTarget);
+    display(e.currentTarget);
     var word = $(e.currentTarget).attr('word');
     var index = parseInt($(e.currentTarget).attr('index'));
     display('ohhh ' + word + ' ' + index);
@@ -114,50 +144,50 @@ display(e.currentTarget);
       });
     })
     .catch(display);
-} catch(e) {display(e)};
   }
 
   function findWords() {
-    Word.run(function (context) {
-      var doc = context.document;
-      var body = doc.body;
-      context.load(body, 'text');
-      var xMap = {};
-      return context.sync().then(function () {
-        var text = body.text;
-        var resultHtml = '';
-        var o = 0;
-        var wordTemp = '(';
-        window.words.forEach(function (word) {
-          wordTemp += word + '|';
-        });
-        wordTemp = wordTemp.substr(0, wordTemp.length - 1) + ')';
-        display(wordTemp)
-        var reg = new RegExp(wordTemp, 'gi');
-        var result;
-        while ((result = reg.exec(text)) != null) {
-          var word = result[0];
-          xMap[word] = xMap[word] || 0;
-          xMap[word]++;
-          o++;
-          resultHtml += (
-            '<span class="selectWord" word="' + word + '" index="' + (xMap[word] - 1) + ')">'
-            + o
-            + ':&nbsp;&nbsp;&nbsp;&nbsp;'
-            + text.substr(reg.lastIndex - word.length - 10, 10)
-            + '<b>' + text.substr(reg.lastIndex - word.length, word.length) + '</b>'
-            + text.substr(reg.lastIndex, 10)
-            + '</span>'
-            + '<br/>'
-          );
-          document.getElementById("findCount").innerText = o;
-        }
-        document.getElementById("findCount").innerText = o;
-        document.getElementById("findResult").innerHTML = resultHtml;
-        console.log('find words done');
-      });
-    })
-    .catch(display);
+    search(false);
+    // Word.run(function (context) {
+    //   var doc = context.document;
+    //   var body = doc.body;
+    //   context.load(body, 'text');
+    //   var xMap = {};
+    //   return context.sync().then(function () {
+    //     var text = body.text;
+    //     var resultHtml = '';
+    //     var o = 0;
+    //     var wordTemp = '(';
+    //     window.words.forEach(function (word) {
+    //       wordTemp += word + '|';
+    //     });
+    //     wordTemp = wordTemp.substr(0, wordTemp.length - 1) + ')';
+    //     display(wordTemp)
+    //     var reg = new RegExp(wordTemp, 'gi');
+    //     var result;
+    //     while ((result = reg.exec(text)) != null) {
+    //       var word = result[0];
+    //       xMap[word] = xMap[word] || 0;
+    //       xMap[word]++;
+    //       o++;
+    //       resultHtml += (
+    //         '<span class="selectWord" word="' + word + '" index="' + (xMap[word] - 1) + ')">'
+    //         + o
+    //         + ':&nbsp;&nbsp;&nbsp;&nbsp;'
+    //         + text.substr(reg.lastIndex - word.length - 10, 10)
+    //         + '<b>' + text.substr(reg.lastIndex - word.length, word.length) + '</b>'
+    //         + text.substr(reg.lastIndex, 10)
+    //         + '</span>'
+    //         + '<br/>'
+    //       );
+    //       document.getElementById("findCount").innerText = o;
+    //     }
+    //     document.getElementById("findCount").innerText = o;
+    //     document.getElementById("findResult").innerHTML = resultHtml;
+    //     console.log('find words done');
+    //   });
+    // })
+    // .catch(display);
   }
 
   function test() {
