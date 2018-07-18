@@ -98,7 +98,6 @@
               range.font.color = 'purple';
               range.font.highlightColor = '#FFFF00'; //Yellow
               range.font.bold = true;
-              o++;
               document.getElementById("findCount").innerText = o;
             }
           }
