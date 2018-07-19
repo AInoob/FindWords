@@ -19,11 +19,16 @@
     <!-- The display name of your add-in. Used on the store and various places of the Office UI such as the add-ins dialog. -->
     <DisplayName DefaultValue="FindWords" />
     <Description DefaultValue="FindWords"/>
+    <Requirements>
+        <Sets DefaultMinVersion="1.1">
+            <Set Name="WordApi" />
+	</Sets>
+    </Requirements>
 
     <!-- Icon for your add-in. Used on installation screens and the add-ins dialog. -->
     <IconUrl DefaultValue="https://ainoob.com/FindWords/images/icon32.png" />
 
-    <SupportUrl DefaultValue="https://github.com/AInoob/FindWords" />
+    <SupportUrl DefaultValue="https://ainoob.com/FindWords/support.html" />
 
     <!-- Domains that will be allowed when navigating. For example, if you use ShowTaskpane and then have an href link, navigation will only be allowed if the domain is on this list. -->
     <AppDomains>

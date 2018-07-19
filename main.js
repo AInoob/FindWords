@@ -103,6 +103,8 @@
           }
         })
 
+        document.getElementById("findCount").innerText = o;
+
         document.getElementById("findResult").innerHTML = resultHtml;
 
         if (highlight) {
