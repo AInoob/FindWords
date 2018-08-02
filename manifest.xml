@@ -146,7 +146,7 @@
       <!-- LongStrings max characters==250. -->
       <bt:LongStrings>
         <bt:String id="Contoso.TaskpaneButton.Tooltip" DefaultValue="Click to find words" />
-        <bt:String id="Contoso.GetStarted.Description" DefaultValue="Find words in single click!" />
+        <bt:String id="Contoso.GetStarted.Description" DefaultValue="Define multiple words to search for, and find all occurrence of them in one click. You can also highlight all of them in onclick. Clicking words in the result also takes you to the location of the occurrence." />
       </bt:LongStrings>
     </Resources>
   </VersionOverrides>
